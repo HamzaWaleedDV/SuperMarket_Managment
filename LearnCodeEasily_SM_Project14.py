@@ -3,6 +3,16 @@ import sqlite3
 connection = sqlite3.connect("products.db")
 cursor = connection.cursor()
 
+# cursor.execute('''
+#     CREATE TABLE products (
+#         id INTEGER PRIMARY KEY,
+#         Name TEXT NOT NULL,
+#         Price INTEGER,
+#         Quantity INTEGER
+#     )           
+# ''')
+
+
 o_username = 'admin'
 o_password = 'admin'
 
@@ -82,9 +92,9 @@ def show_products_indb():
 
         if all_rows:
             print(' | '.join(column_names))
-
+            #all_rows --> [(1, 'Milk', 10, 10), (2, 'Bread', 5, 10)]
             for id, name, price, quantity in all_rows:
-                print(str(id) + ' | ' + name + ' | ' + price + ' | ' + str(quantity))
+                print(f'{id} | {name} | {price} | {quantity}')
         else:
             print("You don't have any products.")
 
@@ -114,10 +124,12 @@ def open_invoice_indb(nams):
 
                 cursor.execute('SELECT Price FROM products WHERE Name = ?', (name,))
                 price = cursor.fetchone()
+                # price --> (10,)
                 prices.append(price[0])
             else:
                 if name != 'q':
                     print("The product not found!")
+                    quit()
 
         print('-' * 40)
         print('Your Bill:')
@@ -148,8 +160,8 @@ if username == o_username and password == o_password:
         name = input('Name: ')
         price = input('Price: ')
         quantity = input('Quantity: ')
-        print('Product added successfully!')
         add_products_indb(name, price, quantity)
+        print('Product added successfully!')
 
 
 
